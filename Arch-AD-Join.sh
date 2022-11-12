@@ -72,3 +72,24 @@ done <$config
 
 # Enable NTP
 systemctl enable ntpd.service
+
+# Create krb5 configuration
+config_file="/etc/krb5.conf"
+Archive_File $config_file
+sudo echo "[libdefaults]" >> $config_file
+sudo echo "   default_realm = $Kerberos" >> $config_file
+sudo echo "   dns_lookup_realm = false" >> $config_file
+sudo echo "   dns_lookup_kdc = true" >> $config_file
+sudo echo "   default_ccache_name = /run/user/%{uid}/krb5cc" >> $config_file
+sudo echo "" >> $config_file
+sudo echo "[domain_realm]" >> $config_file
+sudo echo "    .$DNS = $Kerberos" >> $config_file
+sudo echo "" >> $config_file
+sudo echo "[appdefaults]" >> $config_file
+sudo echo "   pam = {" >> $config_file
+sudo echo "        ticket_lifetime = 1d" >> $config_file
+sudo echo "        renew_lifetime = 1d" >> $config_file
+sudo echo "        forwardable = true" >> $config_file
+sudo echo "        proxiable = false" >> $config_file
+sudo echo "        minimum_uid = 1" >> $config_file
+sudo echo "    }" >> $config_file
