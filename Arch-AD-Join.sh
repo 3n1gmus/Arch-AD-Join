@@ -70,3 +70,5 @@ while read -r line; do
     echo "$line" >> $config_file
 done <$config
 
+# Enable NTP
+systemctl enable ntpd.service
