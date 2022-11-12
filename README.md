@@ -1,4 +1,4 @@
-# Arch-AD-Join
+# Arch-AD-Join (Work In Progress)
 Join Arch Linux system to Active Directory
 
 ## Operation
