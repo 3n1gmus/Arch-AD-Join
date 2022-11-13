@@ -28,11 +28,14 @@ pacman -S --needed samba smbclient ntp krb5 cups --noconfirm
 
 # Import Configuration
 DC_Servers=()
+RFC2307="false"
+
 for line in `cat ad.config`; do
     # echo $line
     IFS="=" read -a Info <<< $line
     case ${Info[0]} in
       NetBIOS)
+        # echo "NetBIOS: ${Info[1]}"
         Netbios=${Info[1]}
         ;;
       DNS)
@@ -41,7 +44,7 @@ for line in `cat ad.config`; do
         ;;
       DC)
         IFS=";" read -a IP_Test <<< ${Info[1]}
-        if [ -z "${IP_Test[1]}"]
+        if [ -z "${IP_Test[1]}" ]
           then
             echo "${Info[1]} has no IP address listed, Aborting"
             exit 1
@@ -49,10 +52,14 @@ for line in `cat ad.config`; do
                   DC_Servers+=(${Info[1]})
         fi
         ;;
+      RFC2307)
+        RFC2307=${Info[1],,}
+        ;;
        *)
         ;;
     esac
 done
+
 
 # Create NTP Configuration
 config_file="/etc/ntp.conf"
