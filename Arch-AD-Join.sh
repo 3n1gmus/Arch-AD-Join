@@ -93,3 +93,19 @@ sudo echo "        forwardable = true" >> $config_file
 sudo echo "        proxiable = false" >> $config_file
 sudo echo "        minimum_uid = 1" >> $config_file
 sudo echo "    }" >> $config_file
+
+# Create PAM System auth
+config_file="/etc/pam.d/system-auth"
+Archive_File $config_file
+config="arch-system-auth.conf"
+while read -r line; do
+    echo "$line" >> $config_file
+done <$config
+
+# Create PAM su file
+config_file="/etc/pam.d/su"
+Archive_File $config_file
+config="arch-su.conf"
+while read -r line; do
+    echo "$line" >> $config_file
+done <$config
