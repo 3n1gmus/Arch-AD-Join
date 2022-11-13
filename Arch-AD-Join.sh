@@ -119,3 +119,19 @@ config="arch-su.conf"
 while read -r line; do
     echo "$line" >> $config_file
 done <$config
+
+# Create pam_winbind file
+config_file="/etc/security/pam_winbind.conf"
+Archive_File $config_file
+config="arch-pam_winbind.conf"
+while read -r line; do
+    echo "$line" >> $config_file
+done <$config
+
+# Create nsswitch file
+config_file="/etc/nsswitch.conf"
+Archive_File $config_file
+config="arch-nsswitch.conf"
+while read -r line; do
+    echo "$line" >> $config_file
+done <$config
