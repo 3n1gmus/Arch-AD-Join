@@ -77,7 +77,7 @@ done
 sudo echo "server 0.us.pool.ntp.org" >> $config_file
 sudo echo "" >> $config_file
 while IFS= read -r line; do
-    echo "$line" >> $config_file
+    sudo echo "$line" >> $config_file
 done <$config
 
 # Create krb5 configuration
@@ -106,7 +106,7 @@ config_file="/etc/pam.d/system-auth"
 Archive_File $config_file
 config="arch-system-auth.conf"
 while IFS= read -r line; do
-    echo "$line" >> $config_file
+    sudo echo "$line" >> $config_file
 done <$config
 
 # Create PAM su file
@@ -114,7 +114,7 @@ config_file="/etc/pam.d/su"
 Archive_File $config_file
 config="arch-su.conf"
 while IFS= read -r line; do
-    echo "$line" >> $config_file
+    sudo echo "$line" >> $config_file
 done <$config
 
 # Create pam_winbind file
@@ -122,7 +122,7 @@ config_file="/etc/security/pam_winbind.conf"
 Archive_File $config_file
 config="arch-pam_winbind.conf"
 while IFS= read -r line; do
-    echo "$line" >> $config_file
+    sudo echo "$line" >> $config_file
 done <$config
 
 # Create nsswitch file
@@ -130,9 +130,8 @@ config_file="/etc/nsswitch.conf"
 Archive_File $config_file
 config="arch-nsswitch.conf"
 while IFS= read -r line; do
-    echo "$line" >> $config_file# Create SMB configuration file
-config_file="./smb.conf"
-Archive_File $config_file
+    sudo echo "$line" >> $config_file
+done <$config
 
 # Create SMB configuration file
 config_file="/etc/samba/smb.conf"
@@ -147,7 +146,7 @@ sudo echo "   realm = $Kerberos" >> $config_file
 # Import SMB middle configuration
 config="arch-smb-mid.conf"
 while IFS= read -r line; do
-    echo "$line" >> $config_file
+    sudo echo "$line" >> $config_file
 done <$config
 
 # Configure RFC2307 SMB Configuration
@@ -167,7 +166,7 @@ fi
 # Import SMB Middle2 configuration
 config="arch-smb-mid2.conf"
 while IFS= read -r line; do
-    echo "$line" >> $config_file
+    sudo echo "$line" >> $config_file
 done <$config
 
 # Configure SMB Printer Sharing
@@ -185,7 +184,7 @@ fi
 # Import SMB tail configuration
 config="arch-smb-tail.conf"
 while IFS= read -r line; do
-    echo "$line" >> $config_file
+    sudo echo "$line" >> $config_file
 done <$config
 
 # Enable Services
