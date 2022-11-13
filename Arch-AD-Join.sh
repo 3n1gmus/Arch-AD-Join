@@ -29,6 +29,7 @@ pacman -S --needed samba smbclient ntp krb5 cups --noconfirm
 # Import Configuration
 DC_Servers=()
 RFC2307="false"
+Printers="false"
 
 for line in `cat ad.config`; do
     # echo $line
@@ -56,6 +57,12 @@ for line in `cat ad.config`; do
         if [ ${Info[1],,} == "true" ];
         then
                 RFC2307="true"
+        fi
+        ;;
+      Printers)
+        if [ ${Info[1],,} == "true" ]
+        then
+                Printers="true"
         fi
         ;;
        *)
