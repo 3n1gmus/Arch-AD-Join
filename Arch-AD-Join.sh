@@ -120,7 +120,7 @@ if [ -f $Destination ]
 then
         Destination="/etc/orig_config/system-auth.${EpocTime}"
 fi
-echo "Copying $Source to $Destination"
+echo "Copying $config_file to $Destination"
 sudo cp $config_file $Destination
 config="arch-system-auth.conf"
 temp="./tmp.file"
