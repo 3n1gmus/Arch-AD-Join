@@ -53,7 +53,10 @@ for line in `cat ad.config`; do
         fi
         ;;
       RFC2307)
-        RFC2307=${Info[1],,}
+        if [ ${Info[1],,} == "true" ];
+        then
+                RFC2307="true"
+        fi
         ;;
        *)
         ;;
