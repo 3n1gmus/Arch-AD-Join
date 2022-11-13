@@ -37,7 +37,7 @@ for line in `cat ad.config`; do
     IFS="=" read -a Info <<< $line
     case ${Info[0]} in
       NetBIOS)
-        # echo "NetBIOS: ${Info[1]}"
+        # echo "NetBIOS: ${Info[1]^^}"
         Netbios=${Info[1]}
         ;;
       DNS)
@@ -207,6 +207,8 @@ while IFS= read -r line; do
     sudo echo "$line" >> $config_file
 done <$config
 
+net ads join -U $ADuser
+
 # Enable Services
 systemctl enable ntpd.service
 systemctl enable smb.service
@@ -218,5 +220,3 @@ systemctl start ntpd.service
 systemctl start smb.service
 systemctl start nmb.service
 systemctl start winbind.service
-
-# net ads join -U Administrator
