@@ -30,6 +30,7 @@ pacman -S --needed samba smbclient ntp krb5 cups --noconfirm
 DC_Servers=()
 RFC2307="false"
 Printers="false"
+ADuser="Administrator"
 
 for line in `cat ad.config`; do
     # echo $line
@@ -64,6 +65,9 @@ for line in `cat ad.config`; do
         then
                 Printers="true"
         fi
+        ;;
+      ADuser)
+                ADuser=${Info[1]}
         ;;
        *)
         ;;
@@ -199,3 +203,5 @@ systemctl enable ntpd.service
 systemctl enable smb.service
 systemctl enable nmb.service
 systemctl enable winbind.service
+
+# net ads join -U Administrator
