@@ -76,12 +76,9 @@ for line in ${DC_Servers[@]}; do
 done
 sudo echo "server 0.us.pool.ntp.org" >> $config_file
 sudo echo "" >> $config_file
-while read -r line; do
+while IFS= read -r line; do
     echo "$line" >> $config_file
 done <$config
-
-# Enable NTP
-systemctl enable ntpd.service
 
 # Create krb5 configuration
 config_file="/etc/krb5.conf"
@@ -108,7 +105,7 @@ sudo echo "    }" >> $config_file
 config_file="/etc/pam.d/system-auth"
 Archive_File $config_file
 config="arch-system-auth.conf"
-while read -r line; do
+while IFS= read -r line; do
     echo "$line" >> $config_file
 done <$config
 
@@ -116,7 +113,7 @@ done <$config
 config_file="/etc/pam.d/su"
 Archive_File $config_file
 config="arch-su.conf"
-while read -r line; do
+while IFS= read -r line; do
     echo "$line" >> $config_file
 done <$config
 
@@ -124,7 +121,7 @@ done <$config
 config_file="/etc/security/pam_winbind.conf"
 Archive_File $config_file
 config="arch-pam_winbind.conf"
-while read -r line; do
+while IFS= read -r line; do
     echo "$line" >> $config_file
 done <$config
 
@@ -132,6 +129,67 @@ done <$config
 config_file="/etc/nsswitch.conf"
 Archive_File $config_file
 config="arch-nsswitch.conf"
-while read -r line; do
+while IFS= read -r line; do
+    echo "$line" >> $config_file# Create SMB configuration file
+config_file="./smb.conf"
+Archive_File $config_file
+
+# Create SMB configuration file
+config_file="/etc/samba/smb.conf"
+Archive_File $config_file
+
+# Generated SMB config start
+sudo echo "[global]" >> $config_file
+sudo echo "   workgroup = $Netbios" >> $config_file
+sudo echo "   security = ADS" >> $config_file
+sudo echo "   realm = $Kerberos" >> $config_file
+
+# Import SMB middle configuration
+config="arch-smb-mid.conf"
+while IFS= read -r line; do
     echo "$line" >> $config_file
 done <$config
+
+# Configure RFC2307 SMB Configuration
+if [ $RFC2307 == "true" ]
+then
+        sudo echo "   idmap config INTERNAL : backend = ad" >> $config_file
+        sudo echo "   idmap config INTERNAL : schema_mode = rfc2307" >> $config_file
+        sudo echo "   idmap config INTERNAL : range = 10000-999999" >> $config_file
+        sudo echo "   idmap config INTERNAL : unix_nss_info = yes" >> $config_file
+        sudo echo "" >> $config_file
+else
+        sudo echo "   idmap config INTERNAL : backend = rid" >> $config_file
+        sudo echo "   idmap config INTERNAL : range = 10000-999999" >> $config_file
+        sudo echo "" >> $config_file
+fi
+
+# Import SMB Middle2 configuration
+config="arch-smb-mid2.conf"
+while IFS= read -r line; do
+    echo "$line" >> $config_file
+done <$config
+
+# Configure SMB Printer Sharing
+if [ $Printers == "false" ]
+then
+        sudo echo "" >> $config_file
+        sudo echo "   # Disable Printer Sharing" >> $config_file
+        sudo echo "   load printers = no" >> $config_file
+        sudo echo "   printing = bsd" >> $config_file
+        sudo echo "   printcap name = /dev/null" >> $config_file
+        sudo echo "   disable spoolss = yes" >> $config_file
+        sudo echo "" >> $config_file
+fi
+
+# Import SMB tail configuration
+config="arch-smb-tail.conf"
+while IFS= read -r line; do
+    echo "$line" >> $config_file
+done <$config
+
+# Enable Services
+systemctl enable ntpd.service
+systemctl enable smb.service
+systemctl enable nmb.service
+systemctl enable winbind.service
