@@ -112,13 +112,22 @@ sudo echo "        proxiable = false" >> $config_file
 sudo echo "        minimum_uid = 1" >> $config_file
 sudo echo "    }" >> $config_file
 
-# Create PAM System auth
+# Create PAM System-auth
 config_file="/etc/pam.d/system-auth"
-Archive_File $config_file
+EpocTime=`date +"%s"`
+Destination="/etc/orig_config/system-auth.original"
+if [ -f $Destination ]
+then
+        Destination="/etc/orig_config/system-auth.${EpocTime}"
+fi
+echo "Copying $Source to $Destination"
+sudo cp $config_file $Destination
 config="arch-system-auth.conf"
+temp="./tmp.file"
 while IFS= read -r line; do
-    sudo echo "$line" >> $config_file
+    sudo echo "$line" >> $temp
 done <$config
+sudo mv -f $temp $config_file
 
 # Create PAM su file
 config_file="/etc/pam.d/su"
