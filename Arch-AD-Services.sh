@@ -1,11 +1,21 @@
+#!/bin/bash
+if[ $1,, == "start" ]
+then
+func1="enable"
+func2="start"
+else
+func1="disable"
+func2="stop"
+fi
+
 # Enable Services
-systemctl enable ntpd.service
-systemctl enable smb.service
-systemctl enable nmb.service
-systemctl enable winbind.service
+systemctl $func1 ntpd.service
+systemctl $func1 smb.service
+systemctl $func1 nmb.service
+systemctl $func1 winbind.service
 
 # Start Services
-systemctl start ntpd.service
-systemctl start smb.service
-systemctl start nmb.service
-systemctl start winbind.service
+systemctl $func2 ntpd.service
+systemctl $func2 smb.service
+systemctl $func2 nmb.service
+systemctl $func2 winbind.service
