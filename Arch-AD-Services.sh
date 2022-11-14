@@ -9,13 +9,13 @@ func2="stop"
 fi
 
 # Enable Services
-systemctl $func1 ntpd.service
-systemctl $func1 smb.service
-systemctl $func1 nmb.service
-systemctl $func1 winbind.service
+sudo systemctl $func1 ntpd.service
+sudo systemctl $func1 smb.service
+sudo systemctl $func1 nmb.service
+sudo systemctl $func1 winbind.service
 
 # Start Services
-systemctl $func2 ntpd.service
-systemctl $func2 smb.service
-systemctl $func2 nmb.service
-systemctl $func2 winbind.service
+sudo systemctl $func2 ntpd.service
+sudo systemctl $func2 smb.service
+sudo systemctl $func2 nmb.service
+sudo systemctl $func2 winbind.service
