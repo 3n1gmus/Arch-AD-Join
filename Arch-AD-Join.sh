@@ -207,12 +207,14 @@ while IFS= read -r line; do
     sudo echo "$line" >> $config_file
 done <$config
 
+# Update /etc/hosts
 hostname=$(hostname)
 FQDN=$hostname.$DNS
+entry="$hostname.$DNS $hostname"
+sudo sed -i 's/$hostname/$entry/g' /etc/hosts
 
-sudo sed -i 's/$hostname/$FQDN/g' /etc/hosts
-
-net ads join -U $ADuser
+# join domain
+sudo net ads join -U $ADuser
 
 # Enable Services
 systemctl enable ntpd.service
