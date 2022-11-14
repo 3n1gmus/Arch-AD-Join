@@ -2,11 +2,11 @@
 op=$1
 if[ ${op,,} == "start" ]
 then
-func1="enable"
-func2="start"
+  func1="enable"
+  func2="start"
 else
-func1="disable"
-func2="stop"
+  func1="disable"
+  func2="stop"
 fi
 
 # Enable Services
