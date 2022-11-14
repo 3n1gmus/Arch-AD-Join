@@ -207,6 +207,11 @@ while IFS= read -r line; do
     sudo echo "$line" >> $config_file
 done <$config
 
+hostname=$(hostname)
+FQDN=$hostname.$DNS
+
+sudo sed -i 's/$hostname/$FQDN/g' /etc/hosts
+
 net ads join -U $ADuser
 
 # Enable Services
