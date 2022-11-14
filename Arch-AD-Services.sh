@@ -1,5 +1,6 @@
 #!/bin/bash
-if[ $1,, == "start" ]
+op=$1
+if[ ${op,,} == "start" ]
 then
 func1="enable"
 func2="start"
