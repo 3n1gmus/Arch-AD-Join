@@ -208,10 +208,10 @@ while IFS= read -r line; do
 done <$config
 
 # Update /etc/hosts
-hostname=$(hostname)
-FQDN=$hostname.$DNS
-entry="$hostname.$DNS $hostname"
-sudo sed -i 's/$hostname/$entry/g' /etc/hosts
+# hostname=$(hostname)
+# FQDN=$hostname.$DNS
+# entry="$hostname.$DNS $hostname"
+# sudo sed -i 's/$hostname/$entry/g' /etc/hosts
 
 # join domain
 sudo net ads join -U $ADuser
