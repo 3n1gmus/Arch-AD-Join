@@ -55,13 +55,13 @@ for line in `cat ad.config`; do
         fi
         ;;
       RFC2307)
-        if [ ${Info[1],,} == "true" ];
+        if [[ ${Info[1],,} == "true" ]];
         then
                 RFC2307="true"
         fi
         ;;
       Printers)
-        if [ ${Info[1],,} == "true" ]
+        if [[ ${Info[1],,} == "true" ]];
         then
                 Printers="true"
         fi
